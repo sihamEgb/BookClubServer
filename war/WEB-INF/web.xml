@@ -52,6 +52,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/addbook</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>SearchBook</servlet-name>
+		<servlet-class>bookclub.server.SearchBookServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchBook</servlet-name>
+		<url-pattern>/searchbook</url-pattern>
+	</servlet-mapping>
+	
 
 
 </web-app>

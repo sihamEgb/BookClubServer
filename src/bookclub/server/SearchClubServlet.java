@@ -16,6 +16,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 
+import com.google.appengine.api.datastore.Query.Filter;
+
 @SuppressWarnings("serial")
 public class SearchClubServlet extends HttpServlet {
 
@@ -26,27 +28,35 @@ public class SearchClubServlet extends HttpServlet {
 			throws IOException {
 
 		// TODO - for now it is search club by location!!
-
+		
 		String location = req.getParameter("location");
 
-		// TODO
-		// String category = req.getParameter("cat");
+		Filter locationFilter =
+				  new FilterPredicate("location", FilterOperator.EQUAL, location);
+
+		// Use class Query to assemble a query
+		Query q = new Query("Club").setFilter(locationFilter);
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-
-		Query q = new Query("Club").setFilter(new FilterPredicate("location",
-				FilterOperator.EQUAL, location));
+		// Use PreparedQuery interface to retrieve results
 		PreparedQuery pq = datastore.prepare(q);
-		// TODO - not as single !!
-		Entity result = pq.asSingleEntity();
-
-		Club foundClub = new Club();
-		foundClub.toJson(result);
 
 		resp.setContentType("text/plain");
-		// resp.getWriter().println("Hello, world");
-		resp.getWriter().println("name: " + foundClub.getName());
+		resp.getWriter().println("results:");
+
+		for (Entity result : pq.asIterable()) {
+			
+			//private String clubId;
+			
+			
+		  String name = (String) result.getProperty("name");
+		  String description = (String) result.getProperty("description");
+		
+		  resp.getWriter().println(name + " " + description);
+
+		}
+
 
 	}
 }
