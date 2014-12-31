@@ -19,6 +19,9 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 import com.google.appengine.api.datastore.Query.Filter;
 
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+
 @SuppressWarnings("serial")
 public class SearchBookServlet extends HttpServlet {
 
@@ -28,16 +31,23 @@ public class SearchBookServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		
-		//TODO - search with multiple parameters ??
+		// TODO - search with multiple parameters ??
 		String location = req.getParameter("location");
 		String query = req.getParameter("title");
 		String language = req.getParameter("language");
 
-		Filter locationFilter =
-				  new FilterPredicate("location", FilterOperator.EQUAL, location);
+		Filter locationFilter = new FilterPredicate("location",
+				FilterOperator.EQUAL, location);
 
-		Query q = new Query("Book").setFilter(locationFilter);
+		Filter languageFilter = new FilterPredicate("language",
+				FilterOperator.EQUAL, language);
+
+		Filter andFilter = CompositeFilterOperator.and(locationFilter,
+				languageFilter);
+
+		// Use class Query to assemble a query
+
+		Query q = new Query("Book").setFilter(andFilter);
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -48,20 +58,19 @@ public class SearchBookServlet extends HttpServlet {
 		resp.getWriter().println("results:");
 
 		for (Entity result : pq.asIterable()) {
-			
-			//private String clubId;
-			
-			
-		  String title = (String) result.getProperty("title");
-		  
-		 Key id = result.getKey();
-		 
-			//	 getProperty("location");
-		
-		  resp.getWriter().println(title + " " + location + "the id is: " + id);
+
+			// private String clubId;
+
+			String title = (String) result.getProperty("title");
+
+			Key id = result.getKey();
+
+			// getProperty("location");
+
+			resp.getWriter().println(
+					title + " " + location + "the id is: " + id);
 
 		}
-
 
 	}
 }
