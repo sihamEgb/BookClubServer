@@ -28,11 +28,11 @@ public class SearchClubServlet extends HttpServlet {
 			throws IOException {
 
 		// TODO - for now it is search club by location!!
-		
+
 		String location = req.getParameter("location");
 
-		Filter locationFilter =
-				  new FilterPredicate("location", FilterOperator.EQUAL, location);
+		Filter locationFilter = new FilterPredicate("location",
+				FilterOperator.EQUAL, location);
 
 		// Use class Query to assemble a query
 		Query q = new Query("Club").setFilter(locationFilter);
@@ -43,20 +43,20 @@ public class SearchClubServlet extends HttpServlet {
 		PreparedQuery pq = datastore.prepare(q);
 
 		resp.setContentType("text/plain");
-		resp.getWriter().println("results:");
+		resp.getWriter().println("{ \"results\" :[");
 
 		for (Entity result : pq.asIterable()) {
-			
-			//private String clubId;
-			
-			
-		  String name = (String) result.getProperty("name");
-		  String description = (String) result.getProperty("description");
-		
-		  resp.getWriter().println(name + " " + description);
+
+			// private String clubId;
+
+			String name = (String) result.getProperty("name");
+			// String description = (String) result.getProperty("description");
+
+			// + "\"description\":"+ description +
+			resp.getWriter().println("{\"name\": \"" + name + "\"},");
 
 		}
-
+		resp.getWriter().println("]}");
 
 	}
 }

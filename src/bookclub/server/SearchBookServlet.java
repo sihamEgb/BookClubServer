@@ -55,7 +55,7 @@ public class SearchBookServlet extends HttpServlet {
 		PreparedQuery pq = datastore.prepare(q);
 
 		resp.setContentType("text/plain");
-		resp.getWriter().println("results:");
+		resp.getWriter().println("{ \"results\" :[");
 
 		for (Entity result : pq.asIterable()) {
 
@@ -66,11 +66,9 @@ public class SearchBookServlet extends HttpServlet {
 			Key id = result.getKey();
 
 			// getProperty("location");
-
-			resp.getWriter().println(
-					title + " " + location + "the id is: " + id);
-
+			resp.getWriter().println("{\"title\": \"" + title + "\"},");
 		}
+		resp.getWriter().println("]}");
 
 	}
 }
