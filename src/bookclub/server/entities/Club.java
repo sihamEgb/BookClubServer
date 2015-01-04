@@ -3,7 +3,7 @@ package bookclub.server.entities;
 import java.util.Set;
 
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.labs.repackaged.org.json.JSONObject;
+import com.google.gson.Gson;
 
 public class Club {
 
@@ -15,6 +15,20 @@ public class Club {
 	private String description;
 	private Set<String> members;
 	private String imageUrl;
+
+	public Club(Entity result) {
+
+		clubId = (String) result.getProperty("clubId");
+		adminId = (String) result.getProperty("adminId");
+		name = (String) result.getProperty("name");
+		location = (String) result.getProperty("location");
+		category = (String) result.getProperty("category");
+		description = (String) result.getProperty("description");
+		imageUrl = (String) result.getProperty("imageUrl");
+		
+		//TODO - what to do with memebrs??
+
+	}
 
 	public String getClubId() {
 		return clubId;
@@ -75,6 +89,7 @@ public class Club {
 	/*
 	 * returns number of members in this club
 	 */
+
 	public int getNumber() {
 		return members.size();
 	}
@@ -87,38 +102,16 @@ public class Club {
 		this.imageUrl = imageUrl;
 	}
 
-	public Club fromJson(JSONObject json) {
+	public String toJson() {
+		Gson gson = new Gson();
+		String json = gson.toJson(this);
+		return json;
 
-		// TODO
-		// Set<String> members;
-		// String imageUrl;
-
-		try {
-			this.setClubId(json.getString("clubId"));
-			this.setAdminId(json.getString("adminId"));
-			this.setName(json.getString("name"));
-			this.setLocation(json.getString("location"));
-			this.setCategory(json.getString("category"));
-			this.setDescription(json.getString("description"));
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return this;
 	}
 
-	public Club toJson(Entity result) {
-		this.location = (String) result.getProperty("location");
-		this.name = (String) result.getProperty("name");
-		this.clubId = (String) result.getProperty("clubId");
-
-		this.category = (String) result.getProperty("category");
-		this.description = (String) result.getProperty("description");
-
-		return this;
-
+	public static Club constructFromJson(String json) {
+		Gson gson = new Gson();
+		return gson.fromJson(json, Club.class);
 	}
 
 }
