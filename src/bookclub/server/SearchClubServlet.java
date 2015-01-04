@@ -16,6 +16,13 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import bookclub.server.entities.Club;
 
@@ -49,12 +56,16 @@ public class SearchClubServlet extends HttpServlet {
 
 		PrintWriter out = resp.getWriter();
 
+		out.print("{ \"results\": [ ");
 		for (Entity result : pq.asIterable()) {
 			Club c = new Club(result);
-			//out.print(c.toJson());
-			resp.getWriter().print(c.toJson());
+			out.print(c.toJson());
+
+			out.print(", ");
 
 		}
+		out.print("]}");
 
 	}
+
 }
