@@ -35,13 +35,25 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>GetClubById</servlet-name>
-		<servlet-class>bookclub.server.GetClubByIdServlet</servlet-class>
+		<servlet-name>DeleteClub</servlet-name>
+		<servlet-class>bookclub.server.DeleteClubServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>GetClubById</servlet-name>
-		<url-pattern>/getclubbyid</url-pattern>
+		<servlet-name>DeleteClub</servlet-name>
+		<url-pattern>/deleteclub</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JoinClub</servlet-name>
+		<servlet-class>bookclub.server.JoinClubServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JoinClub</servlet-name>
+		<url-pattern>/joinclub</url-pattern>
+	</servlet-mapping>
+
+
+
 
 	<servlet>
 		<servlet-name>AddBook</servlet-name>
@@ -51,7 +63,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddBook</servlet-name>
 		<url-pattern>/addbook</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>DeleteBook</servlet-name>
+		<servlet-class>bookclub.server.DeleteBookServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteBook</servlet-name>
+		<url-pattern>/deletebook</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>SearchBook</servlet-name>
 		<servlet-class>bookclub.server.SearchBookServlet</servlet-class>
@@ -60,7 +81,53 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>SearchBook</servlet-name>
 		<url-pattern>/searchbook</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>ChangeBookStatus</servlet-name>
+		<servlet-class>bookclub.server.ChangeBookStatusServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ChangeBookStatus</servlet-name>
+		<url-pattern>/changebookstatus</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddSuggestedbook</servlet-name>
+		<servlet-class>bookclub.server.AddSuggestedbookServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddSuggestedbook</servlet-name>
+		<url-pattern>/addsuggestedbook</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>VoteToSuggestedbook</servlet-name>
+		<servlet-class>bookclub.server.VoteToSuggestedbookServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>VoteToSuggestedbook</servlet-name>
+		<url-pattern>/votetosuggestedbook</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AddMeeting</servlet-name>
+		<servlet-class>bookclub.server.AddMeetingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddMeeting</servlet-name>
+		<url-pattern>/addmeeting</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>JoinMeeting</servlet-name>
+		<servlet-class>bookclub.server.JoinMeetingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JoinMeeting</servlet-name>
+		<url-pattern>/joinmeeting</url-pattern>
+	</servlet-mapping>
 
 
 </web-app>

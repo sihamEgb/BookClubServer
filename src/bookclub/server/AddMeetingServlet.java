@@ -1,7 +1,7 @@
 package bookclub.server;
 
 import java.io.IOException;
-import java.util.Date;
+
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +12,9 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 
+
 @SuppressWarnings("serial")
-public class AddClubServlet extends HttpServlet {
+public class AddMeetingServlet extends HttpServlet {
 
 	/**
 	 * add a new club return the club added with his assigned id
@@ -21,34 +22,29 @@ public class AddClubServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-
-		// private String clubId;
-		String name = req.getParameter("name");
+		
+		// TODO
+		// private Set<String> participants;
+		
+		String suggestedBookId = req.getParameter("suggestedBookId");
+		String date = req.getParameter("date");
 		String location = req.getParameter("location");
-		String description = req.getParameter("description");
-		String admin = req.getParameter("adminId");
-		String imageUrl = req.getParameter("imageUrl");
-		// private Set<String> members;
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		Entity club = new Entity("Club");
-		club.setProperty("name", name);
-		club.setProperty("location", location);
-		club.setProperty("description", description);
-		club.setProperty("adminId", admin);
-		club.setProperty("imageUrl", imageUrl);
-		club.setProperty("date",  new Date());
+		Entity meeting = new Entity("Meeting");
+		meeting.setProperty("suggestedBookId", suggestedBookId);
+		meeting.setProperty("location", location);
+		meeting.setProperty("date", date);
 
 		try {
-			datastore.put(club);
+			datastore.put(meeting);
 		} catch (DatastoreFailureException d) {
 			d.printStackTrace();
 		}
 
 		resp.setContentType("text/plain");
-		resp.getWriter().println("club added");
+		resp.getWriter().println("meeting added");
 
 	}
-
 }

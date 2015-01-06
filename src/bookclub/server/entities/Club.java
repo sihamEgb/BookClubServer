@@ -1,3 +1,4 @@
+
 package bookclub.server.entities;
 
 import java.util.Set;
@@ -11,23 +12,21 @@ public class Club {
 	private String adminId;
 	private String name;
 	private String location;
-	private String category;
+	//private String category;
 	private String description;
-	private Set<String> members;
 	private String imageUrl;
+	// TODO remove
+	private Set<String> members;
 
 	public Club(Entity result) {
-
 		clubId = (String) result.getProperty("clubId");
 		adminId = (String) result.getProperty("adminId");
 		name = (String) result.getProperty("name");
 		location = (String) result.getProperty("location");
-		category = (String) result.getProperty("category");
+		//category = (String) result.getProperty("category");
 		description = (String) result.getProperty("description");
 		imageUrl = (String) result.getProperty("imageUrl");
-		
-		//TODO - what to do with memebrs??
-
+		// TODO - what to do with memebrs??
 	}
 
 	public String getClubId() {
@@ -60,14 +59,6 @@ public class Club {
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public String getDescription() {
@@ -106,7 +97,6 @@ public class Club {
 		Gson gson = new Gson();
 		String json = gson.toJson(this);
 		return json;
-
 	}
 
 	public static Club constructFromJson(String json) {

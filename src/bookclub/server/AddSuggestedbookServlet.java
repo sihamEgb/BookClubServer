@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings("serial")
-public class AddClubServlet extends HttpServlet {
+public class AddSuggestedbookServlet extends HttpServlet {
 
 	/**
 	 * add a new club return the club added with his assigned id
@@ -22,32 +22,32 @@ public class AddClubServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		// private String clubId;
-		String name = req.getParameter("name");
-		String location = req.getParameter("location");
-		String description = req.getParameter("description");
-		String admin = req.getParameter("adminId");
-		String imageUrl = req.getParameter("imageUrl");
-		// private Set<String> members;
+		// TODO
+		// private Set<String> usersId;
+
+		String title = req.getParameter("title");
+		String goodReadsUrl = req.getParameter("goodReadsUrl");
+		String clubId = req.getParameter("clubId");
+		
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		Entity club = new Entity("Club");
-		club.setProperty("name", name);
-		club.setProperty("location", location);
-		club.setProperty("description", description);
-		club.setProperty("adminId", admin);
-		club.setProperty("imageUrl", imageUrl);
-		club.setProperty("date",  new Date());
+		Entity suggestedBook = new Entity("SuggestedBook");
+		suggestedBook.setProperty("title", title);
+		suggestedBook.setProperty("goodReadsUrl", goodReadsUrl);
+		suggestedBook.setProperty("numOfLikes", 0);
+		suggestedBook.setProperty("clubId", clubId);
+		
+		suggestedBook.setProperty("Date", new Date());
 
 		try {
-			datastore.put(club);
+			datastore.put(suggestedBook);
 		} catch (DatastoreFailureException d) {
 			d.printStackTrace();
 		}
 
 		resp.setContentType("text/plain");
-		resp.getWriter().println("club added");
+		resp.getWriter().println("suggested book added");
 
 	}
 

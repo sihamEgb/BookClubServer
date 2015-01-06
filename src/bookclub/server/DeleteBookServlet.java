@@ -10,46 +10,48 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 
-import com.google.appengine.api.datastore.Query.Filter;
-
-import bookclub.server.entities.Club;
-
 @SuppressWarnings("serial")
-public class SearchClubServlet extends HttpServlet {
+public class DeleteBookServlet extends HttpServlet {
 
+	/**
+	 * add a new club return the club added with his assigned id
+	 */
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		String location = req.getParameter("location");
-
-		Filter locationFilter = new FilterPredicate("location",
-				FilterOperator.EQUAL, location);
-
-		// Use class Query to assemble a query
-		Query q = new Query("Club").setFilter(locationFilter);
+		String id = req.getParameter("bookId");
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		// Use PreparedQuery interface to retrieve results
+
+		Key myKey = KeyFactory.createKey("Book", Long.parseLong(id));
+
+		Filter keyFilter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,
+				FilterOperator.EQUAL, myKey);
+		Query q = new Query("Book").setFilter(keyFilter);
+
 		PreparedQuery pq = datastore.prepare(q);
+		Entity result = pq.asSingleEntity();
 
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
 
-		out.print("{ \"results\": [ ");
-		for (Entity result : pq.asIterable()) {
-			Club c = new Club(result);
-			out.print(c.toJson());
+		if (result != null) {
+			datastore.delete(myKey);
+			out.print("success");
 
-			out.print(", ");
-
+		} else {
+			out.print("fail");
 		}
-		out.print("]}");
 
 	}
 
