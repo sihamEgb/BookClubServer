@@ -26,7 +26,7 @@ public class AddSuggestedbookServlet extends HttpServlet {
 		// private Set<String> usersId;
 
 		String title = req.getParameter("title");
-		String goodReadsUrl = req.getParameter("goodReadsUrl");
+		//String goodReadsUrl = req.getParameter("goodReadsUrl");
 		String clubId = req.getParameter("clubId");
 		
 
@@ -34,7 +34,7 @@ public class AddSuggestedbookServlet extends HttpServlet {
 				.getDatastoreService();
 		Entity suggestedBook = new Entity("SuggestedBook");
 		suggestedBook.setProperty("title", title);
-		suggestedBook.setProperty("goodReadsUrl", goodReadsUrl);
+		//suggestedBook.setProperty("goodReadsUrl", goodReadsUrl);
 		suggestedBook.setProperty("numOfLikes", 0);
 		suggestedBook.setProperty("clubId", clubId);
 		

@@ -30,6 +30,8 @@ public class AddClubServlet extends HttpServlet {
 		String imageUrl = req.getParameter("imageUrl");
 		// private Set<String> members;
 
+		//if (imageUrl.equals(null))
+		//	imageUrl = "http://www.viduman.com/dosya/default.jpg";
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 		Entity club = new Entity("Club");
@@ -38,7 +40,9 @@ public class AddClubServlet extends HttpServlet {
 		club.setProperty("description", description);
 		club.setProperty("adminId", admin);
 		club.setProperty("imageUrl", imageUrl);
-		club.setProperty("date",  new Date());
+		club.setProperty("memeberNum", 0);
+
+		club.setProperty("date", new Date());
 
 		try {
 			datastore.put(club);

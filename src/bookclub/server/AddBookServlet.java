@@ -2,7 +2,6 @@ package bookclub.server;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +11,6 @@ import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
 
 @SuppressWarnings("serial")
 public class AddBookServlet extends HttpServlet {
@@ -26,18 +21,13 @@ public class AddBookServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		// UserService userService = UserServiceFactory.getUserService();
-		// User user = userService.getCurrentUser();
-
-		// private String bookId;
-		// private String imageUrl; // or default image
-		// private boolean isAvailable;
 
 		String title = req.getParameter("title");
 		String location = req.getParameter("location");
 		String author = req.getParameter("author");
 		String language = req.getParameter("language");
 		String ownerId = req.getParameter("ownerId");
+		String imageUrl = req.getParameter("imageUrl");
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -47,9 +37,10 @@ public class AddBookServlet extends HttpServlet {
 		book.setProperty("author", author);
 		book.setProperty("language", language);
 		book.setProperty("ownerId", ownerId);
+		book.setProperty("imageUrl", imageUrl);
+		book.setProperty("isAvailable", true);
 
-		// Date insertionDate = new Date();
-		// club.setProperty("date", insertionDate);
+		book.setProperty("Date", new Date());
 
 		try {
 			datastore.put(book);
@@ -57,21 +48,9 @@ public class AddBookServlet extends HttpServlet {
 			d.printStackTrace();
 		}
 
-		// Query q = new Query("Club").addSort("date",
-		// SortDirection.DESCENDING);
-		// PreparedQuery pq = datastore.prepare(q);
-		// List<Entity> resultList =
-		// pq.asList(FetchOptions.Builder.withLimit(1));
-
 		resp.setContentType("text/plain");
 		resp.getWriter().println("book added");
 
-		// if (resultList.isEmpty())
-		// resp.getWriter().println("club not available");
-		// else
-		// resp.getWriter().println(
-		// "club added: " + resultList.get(0).getKey.getId());
-		// entity.getKey().getId();
 	}
 
 }

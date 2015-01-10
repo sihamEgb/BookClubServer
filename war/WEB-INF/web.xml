@@ -110,7 +110,19 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>VoteToSuggestedbook</servlet-name>
 		<url-pattern>/votetosuggestedbook</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetSuggestedBooks</servlet-name>
+		<servlet-class>bookclub.server.GetSuggestedBooksServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetSuggestedBooks</servlet-name>
+		<url-pattern>/getsuggestedbooks</url-pattern>
+	</servlet-mapping>
 
+	
+	
 	<servlet>
 		<servlet-name>AddMeeting</servlet-name>
 		<servlet-class>bookclub.server.AddMeetingServlet</servlet-class>

@@ -10,6 +10,8 @@ import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
@@ -34,19 +36,31 @@ public class JoinClubServlet extends HttpServlet {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 		resp.setContentType("text/plain");
+
+		Key myKey = KeyFactory.createKey("Club", Long.parseLong(clubId));
+		Filter keyFilter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,
+				FilterOperator.EQUAL, myKey);
+		Query q = new Query("Club").setFilter(keyFilter);
+		PreparedQuery pq = datastore.prepare(q);
+		Entity result = pq.asSingleEntity();
+		Number memeberNum = (Number) result.getProperty("memeberNum");
+		Integer num = memeberNum.intValue();
+
 		if (op.equals("join")) {
 
 			Entity joinClub = new Entity("JoinClub");
 			joinClub.setProperty("clubId", clubId);
 			joinClub.setProperty("userId", userId);
 
-			try {
-				datastore.put(joinClub);
-			} catch (DatastoreFailureException d) {
-				d.printStackTrace();
-			}
+			num++;
 
+			memeberNum = num;
+			result.setProperty("memeberNum", memeberNum);
+			datastore.put(result);
+
+			datastore.put(joinClub);
 			resp.getWriter().println("member joined club");
+
 		} else {
 
 			Filter userFilter = new FilterPredicate("userId",
@@ -58,12 +72,16 @@ public class JoinClubServlet extends HttpServlet {
 			Filter andFilter = CompositeFilterOperator.and(userFilter,
 					clubFilter);
 
-			Query q = new Query("JoinClub").setFilter(andFilter);
+			Query q2 = new Query("JoinClub").setFilter(andFilter);
 
-			PreparedQuery pq = datastore.prepare(q);
-			Entity result = pq.asSingleEntity();
-			datastore.delete(result.getKey());
+			PreparedQuery pq2 = datastore.prepare(q2);
+			Entity result2 = pq2.asSingleEntity();
+			datastore.delete(result2.getKey());
 
+			num--;
+			memeberNum = num;
+			result.setProperty("memeberNum", memeberNum);
+			datastore.put(result);
 			resp.getWriter().println("member leaved club");
 
 		}

@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
 @SuppressWarnings("serial")
-public class GetClubByIdServlet extends HttpServlet {
+public class TempGetClubByIdServlet extends HttpServlet {
 
 	/**
 	 * get a club by his id number
@@ -25,16 +25,16 @@ public class GetClubByIdServlet extends HttpServlet {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
-		//TODO - not working
-		//Club myClub = pm.getObjectById(Club.class, id);
-		
+		// TODO - not working
+		//Club myClub = datastore.getObjectById(Club.class, id);
+
 		//Query q = new Query("Club").setFilter(new FilterPredicate("id",
 		//		FilterOperator.EQUAL, id));
 		//PreparedQuery pq = datastore.prepare(q);
 		//Entity result = pq.asSingleEntity();
 
-		//Club foundClub = new Club();
-		//foundClub.toJson(result);
+		// Club foundClub = new Club();
+		// foundClub.toJson(result);
 
 		resp.setContentType("text/plain");
 		resp.getWriter().println("hello world");
