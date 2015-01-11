@@ -1,7 +1,5 @@
 package bookclub.server.entities;
 
-import java.util.Set;
-
 import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 
@@ -10,9 +8,10 @@ public class User {
 	private String userId;
 	private String name;
 	private String email;
-	private Set<String> ownedClubs; // duplicate??
-	private Set<String> myJoinedClubs;
-	private Set<String> myBooks;
+
+	// private Set<String> ownedClubs; 
+	// private Set<String> myJoinedClubs;
+	// private Set<String> myBooks;
 	// meetings
 	public User(Entity result) {
 		userId = (String) result.getProperty("userId");
@@ -47,30 +46,6 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Set<String> getOwnedClubs() {
-		return ownedClubs;
-	}
-
-	public void setOwnedClubs(Set<String> ownedClubs) {
-		this.ownedClubs = ownedClubs;
-	}
-
-	public Set<String> getMyJoinedClubs() {
-		return myJoinedClubs;
-	}
-
-	public void setMyJoinedClubs(Set<String> myJoinedClubs) {
-		this.myJoinedClubs = myJoinedClubs;
-	}
-
-	public Set<String> getMyBooks() {
-		return myBooks;
-	}
-
-	public void setMyBooks(Set<String> myBooks) {
-		this.myBooks = myBooks;
 	}
 
 	public String toJson() {

@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -46,45 +45,43 @@ public class JoinClubServlet extends HttpServlet {
 		Number memeberNum = (Number) result.getProperty("memeberNum");
 		Integer num = memeberNum.intValue();
 
-		if (op.equals("join")) {
+		Filter userFilter = new FilterPredicate("userId", FilterOperator.EQUAL,
+				userId);
+		Filter clubFilter = new FilterPredicate("clubId", FilterOperator.EQUAL,
+				clubId);
+		Filter andFilter = CompositeFilterOperator.and(userFilter, clubFilter);
+		Query q2 = new Query("JoinClub").setFilter(andFilter);
 
-			Entity joinClub = new Entity("JoinClub");
-			joinClub.setProperty("clubId", clubId);
-			joinClub.setProperty("userId", userId);
+		PreparedQuery pq2 = datastore.prepare(q2);
+		Entity result2 = pq2.asSingleEntity();
 
-			num++;
+		if (result2 != null)
+			resp.getWriter().println("member already joined this club");
+		else {
+			if (op.equals("leave")) {
+				datastore.delete(result2.getKey());
+				num--;
+				memeberNum = num;
+				result.setProperty("memeberNum", memeberNum);
+				datastore.put(result);
+				resp.getWriter().println("member leaved club");
+			} else {
 
-			memeberNum = num;
-			result.setProperty("memeberNum", memeberNum);
-			datastore.put(result);
+				Entity joinClub = new Entity("JoinClub");
+				joinClub.setProperty("clubId", clubId);
+				joinClub.setProperty("userId", userId);
 
-			datastore.put(joinClub);
-			resp.getWriter().println("member joined club");
+				num++;
 
-		} else {
+				memeberNum = num;
+				result.setProperty("memeberNum", memeberNum);
+				datastore.put(result);
 
-			Filter userFilter = new FilterPredicate("userId",
-					FilterOperator.EQUAL, userId);
-
-			Filter clubFilter = new FilterPredicate("clubId",
-					FilterOperator.EQUAL, clubId);
-
-			Filter andFilter = CompositeFilterOperator.and(userFilter,
-					clubFilter);
-
-			Query q2 = new Query("JoinClub").setFilter(andFilter);
-
-			PreparedQuery pq2 = datastore.prepare(q2);
-			Entity result2 = pq2.asSingleEntity();
-			datastore.delete(result2.getKey());
-
-			num--;
-			memeberNum = num;
-			result.setProperty("memeberNum", memeberNum);
-			datastore.put(result);
-			resp.getWriter().println("member leaved club");
-
+				datastore.put(joinClub);
+				resp.getWriter().println("member joined club");
+			}
 		}
+
 	}
 
 }
