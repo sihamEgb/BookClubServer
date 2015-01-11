@@ -55,33 +55,33 @@ public class JoinClubServlet extends HttpServlet {
 		PreparedQuery pq2 = datastore.prepare(q2);
 		Entity result2 = pq2.asSingleEntity();
 
-		if (result2 != null)
+		if (op.equals("leave") && (result2 == null))
+			resp.getWriter().println("member not joined this club");
+		else if (op.equals("join") && (result2 != null))
 			resp.getWriter().println("member already joined this club");
-		else {
-			if (op.equals("leave")) {
-				datastore.delete(result2.getKey());
-				num--;
-				memeberNum = num;
-				result.setProperty("memeberNum", memeberNum);
-				datastore.put(result);
-				resp.getWriter().println("member leaved club");
-			} else {
 
-				Entity joinClub = new Entity("JoinClub");
-				joinClub.setProperty("clubId", clubId);
-				joinClub.setProperty("userId", userId);
+		else if (op.equals("leave")) {
+			datastore.delete(result2.getKey());
+			num--;
+			memeberNum = num;
+			result.setProperty("memeberNum", memeberNum);
+			datastore.put(result);
+			resp.getWriter().println("member leaved club");
+		} else {
 
-				num++;
+			Entity joinClub = new Entity("JoinClub");
+			joinClub.setProperty("clubId", clubId);
+			joinClub.setProperty("userId", userId);
 
-				memeberNum = num;
-				result.setProperty("memeberNum", memeberNum);
-				datastore.put(result);
+			num++;
 
-				datastore.put(joinClub);
-				resp.getWriter().println("member joined club");
-			}
+			memeberNum = num;
+			result.setProperty("memeberNum", memeberNum);
+			datastore.put(result);
+
+			datastore.put(joinClub);
+			resp.getWriter().println("member joined club");
 		}
-
 	}
 
 }
