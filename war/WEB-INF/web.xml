@@ -158,7 +158,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetMyBooks</servlet-name>
 		<url-pattern>/getmybooks</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>GetMyClubs</servlet-name>
+		<servlet-class>bookclub.server.GetMyClubsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMyClubs</servlet-name>
+		<url-pattern>/getmyclubs</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>AddUser</servlet-name>
 		<servlet-class>bookclub.server.AddUserServlet</servlet-class>
@@ -167,8 +176,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>AddUser</servlet-name>
 		<url-pattern>/adduser</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 
 
 

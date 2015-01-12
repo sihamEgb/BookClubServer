@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -18,6 +20,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.Filter;
 
 import bookclub.server.entities.Club;
+import bookclub.server.entities.User;
 
 @SuppressWarnings("serial")
 public class GetMyClubsServlet extends HttpServlet {
@@ -43,7 +46,19 @@ public class GetMyClubsServlet extends HttpServlet {
 
 		out.print("{ \"results\": [ ");
 		for (Entity result : pq.asIterable()) {
-			Club c = new Club(result);
+
+			Key myKey = KeyFactory.createKey("Club",
+					Long.parseLong((String) result.getProperty("clubId")));
+
+			Filter keyFilter = new FilterPredicate(
+					Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, myKey);
+
+			Query q2 = new Query("Club").setFilter(keyFilter);
+			PreparedQuery pq2 = datastore.prepare(q2);
+			Entity result2 = pq2.asSingleEntity();
+			
+			//out.print(result2);
+			Club c = new Club(result2);
 			out.print(c.toJson());
 
 			out.print(", ");
