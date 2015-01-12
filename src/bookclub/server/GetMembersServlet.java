@@ -20,7 +20,7 @@ import com.google.appengine.api.datastore.Query.Filter;
 import bookclub.server.entities.User;
 
 @SuppressWarnings("serial")
-public class GetMemebersServlet extends HttpServlet {
+public class GetMembersServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {

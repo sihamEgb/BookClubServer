@@ -53,12 +53,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>GetMemebers</servlet-name>
-		<servlet-class>bookclub.server.GetMemebersServlet</servlet-class>
+		<servlet-name>GetMembers</servlet-name>
+		<servlet-class>bookclub.server.GetMembersServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>GetMemebers</servlet-name>
-		<url-pattern>/getmemebers</url-pattern>
+		<servlet-name>GetMembers</servlet-name>
+		<url-pattern>/getmembers</url-pattern>
 	</servlet-mapping>
 
 
