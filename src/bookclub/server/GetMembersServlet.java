@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -43,7 +45,17 @@ public class GetMembersServlet extends HttpServlet {
 
 		out.print("{ \"results\": [ ");
 		for (Entity result : pq.asIterable()) {
-			User c = new User(result);
+
+			Key myKey = KeyFactory.createKey("User",
+					Long.parseLong((String) result.getProperty("userId")));
+
+			Filter keyFilter = new FilterPredicate(
+					Entity.KEY_RESERVED_PROPERTY, FilterOperator.EQUAL, myKey);
+
+			Query q2 = new Query("User").setFilter(keyFilter);
+			PreparedQuery pq2 = datastore.prepare(q2);
+			Entity result2 = pq2.asSingleEntity();
+			User c = new User(result2);
 			out.print(c.toJson());
 
 			out.print(", ");

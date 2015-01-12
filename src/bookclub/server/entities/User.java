@@ -9,7 +9,7 @@ public class User {
 	private String name;
 	private String email;
 
-	// private Set<String> ownedClubs; 
+	// private Set<String> ownedClubs;
 	// private Set<String> myJoinedClubs;
 	// private Set<String> myBooks;
 	// meetings
@@ -17,11 +17,6 @@ public class User {
 		userId = (String) result.getProperty("userId");
 		name = (String) result.getProperty("name");
 		email = (String) result.getProperty("email");
-
-		// TODO - owned clubs
-		// TODO - joined clubs
-		// TODO - own books
-
 	}
 
 	public String getUserId() {
