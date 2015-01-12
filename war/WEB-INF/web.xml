@@ -158,6 +158,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetMyBooks</servlet-name>
 		<url-pattern>/getmybooks</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AddUser</servlet-name>
+		<servlet-class>bookclub.server.AddUserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AddUser</servlet-name>
+		<url-pattern>/adduser</url-pattern>
+	</servlet-mapping>
+	
+	
 
 
 
