@@ -67,15 +67,15 @@ public class AddMeetingServlet extends HttpServlet {
 			meeting.setProperty("clubId", clubId);
 			meeting.setProperty("date", date);
 			datastore.put(meeting);
+			out.print("first meeting added");
 
 		} else {
 			result.setProperty("title", title);
 			result.setProperty("location", location);
-			result.setProperty("title", title);
 			result.setProperty("date", date);
-
 			datastore.put(result);
 			out.print("new meeting added");
+			
 
 		}
 
