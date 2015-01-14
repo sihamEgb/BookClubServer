@@ -10,10 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -28,16 +27,28 @@ public class VoteToSuggestedbookServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		String id = req.getParameter("suggestedBookId");
+		// String id = req.getParameter("suggestedBookId");
+
+		String clubId = req.getParameter("clubId");
+		String title = req.getParameter("title");
+		String op = req.getParameter("op");
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 
-		Key myKey = KeyFactory.createKey("SuggestedBook", Long.parseLong(id));
+		// Key myKey = KeyFactory.createKey("SuggestedBook",
+		// Long.parseLong(id));
 
-		Filter keyFilter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,
-				FilterOperator.EQUAL, myKey);
-		Query q = new Query("SuggestedBook").setFilter(keyFilter);
+		Filter clubIdFilter = new FilterPredicate("clubId",
+				FilterOperator.EQUAL, clubId);
+
+		Filter titleFilter = new FilterPredicate("title", FilterOperator.EQUAL,
+				title);
+
+		Filter andFilter = CompositeFilterOperator.and(clubIdFilter,
+				titleFilter);
+
+		Query q = new Query("SuggestedBook").setFilter(andFilter);
 
 		PreparedQuery pq = datastore.prepare(q);
 		Entity result = pq.asSingleEntity();
@@ -45,12 +56,15 @@ public class VoteToSuggestedbookServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
 
-		out.print("bla bla");
+		// out.print("bla bla");
 
-		String title = (String) result.getProperty("title");
+		// String title = (String) result.getProperty("title");
 		Number numOfLikes = (Number) result.getProperty("numOfLikes");
 		Integer num = numOfLikes.intValue();
-		num++;
+		if (op.equals("like"))
+			num++;
+		else
+			num--;
 		numOfLikes = num;
 		// = numOfLikes+1;
 
@@ -60,7 +74,7 @@ public class VoteToSuggestedbookServlet extends HttpServlet {
 		// Integer numOfLikes = (Integer) result.getProperty("numOfLikes");
 
 		// datastore.delete(myKey);
-		out.print("num of likes for " + title + "is: " + numOfLikes);
+		out.print("num of likes is: " + numOfLikes);
 
 	}
 

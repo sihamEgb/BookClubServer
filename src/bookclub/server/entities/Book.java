@@ -14,7 +14,7 @@ public class Book {
 	private Boolean isAvailable;
 
 	public Book(Entity result) {
-		bookId = (String) result.getProperty("bookId");
+		bookId = Long.toString(result.getKey().getId());
 		ownerId = (String) result.getProperty("ownerId");
 		title = (String) result.getProperty("title");
 		author = (String) result.getProperty("author");

@@ -14,7 +14,8 @@ public class User {
 	// private Set<String> myBooks;
 	// meetings
 	public User(Entity result) {
-		userId = (String) result.getProperty("userId");
+		
+		userId = Long.toString(result.getKey().getId());
 		name = (String) result.getProperty("name");
 		email = (String) result.getProperty("email");
 	}

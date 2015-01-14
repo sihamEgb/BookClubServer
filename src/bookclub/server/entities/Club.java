@@ -12,15 +12,18 @@ public class Club {
 	private String description;
 	private String imageUrl;
 	private Number memeberNum;
+	private String meetingId;
 
 	public Club(Entity result) {
-		clubId = (String) result.getProperty("clubId");
+
+		clubId = Long.toString(result.getKey().getId());
 		adminId = (String) result.getProperty("adminId");
 		name = (String) result.getProperty("name");
 		location = (String) result.getProperty("location");
 		description = (String) result.getProperty("description");
 		imageUrl = (String) result.getProperty("imageUrl");
 		memeberNum = (Number) result.getProperty("memeberNum");
+		meetingId = (String) result.getProperty("meetingId");
 	}
 
 	public String toJson() {

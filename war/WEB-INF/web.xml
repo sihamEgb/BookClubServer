@@ -151,6 +151,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>GetClubMeeting</servlet-name>
+		<servlet-class>bookclub.server.GetClubMeetingServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetClubMeeting</servlet-name>
+		<url-pattern>/getclubmeeting</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>GetMyBooks</servlet-name>
 		<servlet-class>bookclub.server.GetMyBooksServlet</servlet-class>
 	</servlet>
@@ -167,7 +176,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetMyClubs</servlet-name>
 		<url-pattern>/getmyclubs</url-pattern>
 	</servlet-mapping>
-
+	
 	<servlet>
 		<servlet-name>AddUser</servlet-name>
 		<servlet-class>bookclub.server.AddUserServlet</servlet-class>
@@ -178,7 +187,26 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 
 
-
+	<servlet>
+		<servlet-name>GetSuggestedBookById</servlet-name>
+		<servlet-class>bookclub.server.GetSuggestedBookByIdServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetSuggestedBookById</servlet-name>
+		<url-pattern>/getsuggestedbookbyId</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>DeleteSuggestedBook</servlet-name>
+		<servlet-class>bookclub.server.DeleteSuggestedBookServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteSuggestedBook</servlet-name>
+		<url-pattern>/deletesuggestedbook</url-pattern>
+	</servlet-mapping>
+	
 
 
 </web-app>

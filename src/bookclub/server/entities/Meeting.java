@@ -1,5 +1,6 @@
 package bookclub.server.entities;
 
+import java.util.Date;
 import java.util.Set;
 
 import com.google.appengine.api.datastore.Entity;
@@ -7,17 +8,22 @@ import com.google.gson.Gson;
 
 public class Meeting {
 	private String meetingId;
-	private String suggestedBookId;
-	private String date;
+	private String title;
+	//private String suggestedBookId;
+	private Date date;
 	private String location;
-	private Set<String> participants;
+	private String clubId;
+
+	// private Set<String> participants;
 
 	public Meeting(Entity result) {
-		meetingId = (String) result.getProperty("meetingId");
-		suggestedBookId = (String) result.getProperty("suggestedBookId");
-		date = (String) result.getProperty("date");
+
+		meetingId = Long.toString(result.getKey().getId());
+		//suggestedBookId = (String) result.getProperty("suggestedBookId");
+		date = (Date) result.getProperty("date");
 		location = (String) result.getProperty("location");
-		
+		title = (String) result.getProperty("title");
+		clubId = (String) result.getProperty("clubId");
 
 		// TODO - what to do with participants??
 	}
@@ -31,18 +37,6 @@ public class Meeting {
 	}
 
 	
-	public String getDate() {
-		return date;
-	}
-
-	public Integer getParticipantsNumber() {
-		return participants.size();
-	}
-
-	public void addParticipant(String participant) {
-		participants.add(participant);
-	}
-
 	public String toJson() {
 		Gson gson = new Gson();
 		String json = gson.toJson(this);

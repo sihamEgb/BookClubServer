@@ -41,6 +41,7 @@ public class AddClubServlet extends HttpServlet {
 		club.setProperty("adminId", admin);
 		club.setProperty("imageUrl", imageUrl);
 		club.setProperty("memeberNum", 0);
+		//club.setProperty("meetingId", null);
 
 		club.setProperty("date", new Date());
 

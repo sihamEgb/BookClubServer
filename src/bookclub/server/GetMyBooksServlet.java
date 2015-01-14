@@ -27,7 +27,7 @@ public class GetMyBooksServlet extends HttpServlet {
 
 		String userId = req.getParameter("userId");
 
-		Filter idFilter = new FilterPredicate("userId", FilterOperator.EQUAL,
+		Filter idFilter = new FilterPredicate("ownerId", FilterOperator.EQUAL,
 				userId);
 
 		// Use class Query to assemble a query

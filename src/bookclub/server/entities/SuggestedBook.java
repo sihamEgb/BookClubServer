@@ -15,7 +15,8 @@ public class SuggestedBook {
 	// private Set<String> usersId;
 
 	public SuggestedBook(Entity result) {
-		suggestedBookId = (String) result.getProperty("suggestedBookId");
+		
+		suggestedBookId = Long.toString(result.getKey().getId());
 		this.title = (String) result.getProperty("title");
 		// goodReadsUrl = (String) result.getProperty("goodReadsUrl");
 		numOfLikes = (Number) result.getProperty("numOfLikes");
