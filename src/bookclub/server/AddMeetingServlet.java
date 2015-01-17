@@ -22,7 +22,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 @SuppressWarnings("serial")
 public class AddMeetingServlet extends HttpServlet {
 
-	/**
+	/*
 	 * add a new club return the club added with his assigned id
 	 */
 	@Override
@@ -65,6 +65,15 @@ public class AddMeetingServlet extends HttpServlet {
 			out.print("first meeting added");
 
 		} else {
+
+			Entity archivedMeeting = new Entity("ArchivedMeeting");
+			archivedMeeting.setProperty("title", result.getProperty("title"));
+			archivedMeeting.setProperty("location",
+					result.getProperty("location"));
+			archivedMeeting.setProperty("clubId", result.getProperty("clubId"));
+			archivedMeeting.setProperty("date", result.getProperty("date"));
+			datastore.put(archivedMeeting);
+
 			result.setProperty("title", title);
 			result.setProperty("location", location);
 			result.setProperty("date", date);

@@ -214,6 +214,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/deletesuggestedbook</url-pattern>
 	</servlet-mapping>
 
-
+	<servlet>
+		<servlet-name>GetArchiveMeetings</servlet-name>
+		<servlet-class>bookclub.server.GetArchiveMeetingsServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetArchiveMeetings</servlet-name>
+		<url-pattern>/getarchivemeetings</url-pattern>
+	</servlet-mapping>
 
 </web-app>

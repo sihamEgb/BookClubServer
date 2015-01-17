@@ -13,7 +13,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings("serial")
-public class ArchiveMeetingServlet extends HttpServlet {
+public class GetArchiveMeetingsServlet extends HttpServlet {
 
 	/**
 	 * add a new club return the club added with his assigned id
