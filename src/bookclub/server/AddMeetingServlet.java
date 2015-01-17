@@ -75,7 +75,6 @@ public class AddMeetingServlet extends HttpServlet {
 			result.setProperty("date", date);
 			datastore.put(result);
 			out.print("new meeting added");
-			
 
 		}
 

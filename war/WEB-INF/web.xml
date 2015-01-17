@@ -176,7 +176,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetMyClubs</servlet-name>
 		<url-pattern>/getmyclubs</url-pattern>
 	</servlet-mapping>
-	
+
+	<servlet>
+		<servlet-name>GetOwnedClubs</servlet-name>
+		<servlet-class>bookclub.server.GetOwnedClubsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetOwnedClubs</servlet-name>
+		<url-pattern>/getownedclubs</url-pattern>
+	</servlet-mapping>
+
+
 	<servlet>
 		<servlet-name>AddUser</servlet-name>
 		<servlet-class>bookclub.server.AddUserServlet</servlet-class>
@@ -196,7 +206,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetSuggestedBookById</servlet-name>
 		<url-pattern>/getsuggestedbookbyId</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>DeleteSuggestedBook</servlet-name>
 		<servlet-class>bookclub.server.DeleteSuggestedBookServlet
@@ -206,7 +216,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>DeleteSuggestedBook</servlet-name>
 		<url-pattern>/deletesuggestedbook</url-pattern>
 	</servlet-mapping>
-	
+
 
 
 </web-app>

@@ -64,7 +64,7 @@ public class AddClubServlet extends HttpServlet {
 		Entity joinClub = new Entity("JoinClub");
 		joinClub.setProperty("clubId", clubId);
 		joinClub.setProperty("userId", admin);
-		joinClub.setProperty("JoinClub", new Date());
+		joinClub.setProperty("Date", new Date());
 
 		try {
 			datastore.put(joinClub);
