@@ -1,16 +1,22 @@
 package bookclub.server;
 
 import java.io.IOException;
-import java.util.Date;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.DatastoreFailureException;
+import bookclub.server.entities.Meeting;
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 
 @SuppressWarnings("serial")
 public class GetArchiveMeetingsServlet extends HttpServlet {
@@ -22,34 +28,29 @@ public class GetArchiveMeetingsServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		String title = req.getParameter("title");
-		String location = req.getParameter("location");
-		String author = req.getParameter("author");
-		String language = req.getParameter("language");
-		String ownerId = req.getParameter("ownerId");
-		String imageUrl = req.getParameter("imageUrl");
+		String clubId = req.getParameter("clubId");
+
+		Filter idFilter = new FilterPredicate("clubId", FilterOperator.EQUAL,
+				clubId);
+
+		Query q = new Query("ArchiveMeeting").setFilter(idFilter);
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		Entity book = new Entity("Book");
-		book.setProperty("title", title);
-		book.setProperty("location", location);
-		book.setProperty("author", author);
-		book.setProperty("language", language);
-		book.setProperty("ownerId", ownerId);
-		book.setProperty("imageUrl", imageUrl);
-		book.setProperty("isAvailable", true);
-
-		book.setProperty("Date", new Date());
-
-		try {
-			datastore.put(book);
-		} catch (DatastoreFailureException d) {
-			d.printStackTrace();
-		}
+		PreparedQuery pq = datastore.prepare(q);
 
 		resp.setContentType("text/plain");
-		resp.getWriter().println("book added");
+		PrintWriter out = resp.getWriter();
+
+		out.print("{ \"results\": [ ");
+		for (Entity result : pq.asIterable()) {
+			Meeting c = new Meeting(result);
+			out.print(c.toJson());
+
+			out.print(", ");
+
+		}
+		out.print("]}");
 
 	}
 
