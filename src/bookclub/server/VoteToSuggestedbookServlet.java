@@ -2,6 +2,7 @@ package bookclub.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,9 @@ public class VoteToSuggestedbookServlet extends HttpServlet {
 
 		String clubId = req.getParameter("clubId");
 		String title = req.getParameter("title");
-		String op = req.getParameter("op");
+		String userId = req.getParameter("userId");
+
+		// String op = req.getParameter("op");
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -41,40 +44,45 @@ public class VoteToSuggestedbookServlet extends HttpServlet {
 
 		Filter clubIdFilter = new FilterPredicate("clubId",
 				FilterOperator.EQUAL, clubId);
-
 		Filter titleFilter = new FilterPredicate("title", FilterOperator.EQUAL,
 				title);
+		Filter userIdFilter = new FilterPredicate("userId",
+				FilterOperator.EQUAL, userId);
 
-		Filter andFilter = CompositeFilterOperator.and(clubIdFilter,
-				titleFilter);
+		Filter andAllFilter = CompositeFilterOperator.and(clubIdFilter,
+				titleFilter, userIdFilter);
 
-		Query q = new Query("SuggestedBook").setFilter(andFilter);
-
-		PreparedQuery pq = datastore.prepare(q);
-		Entity result = pq.asSingleEntity();
-
+		Query q1 = new Query("Vote").setFilter(andAllFilter);
+		PreparedQuery pq1 = datastore.prepare(q1);
+		Entity result1 = pq1.asSingleEntity();
 		resp.setContentType("text/plain");
 		PrintWriter out = resp.getWriter();
 
-		// out.print("bla bla");
+		if (result1 == null) {
+			Entity vote = new Entity("Vote");
+			vote.setProperty("userId", userId);
+			vote.setProperty("clubId", clubId);
+			vote.setProperty("title", title);
+			datastore.put(vote);
+			Filter andFilter = CompositeFilterOperator.and(clubIdFilter,
+					titleFilter);
+			Query q = new Query("SuggestedBook").setFilter(andFilter);
 
-		// String title = (String) result.getProperty("title");
-		Number numOfLikes = (Number) result.getProperty("numOfLikes");
-		Integer num = numOfLikes.intValue();
-		if (op.equals("like"))
+			PreparedQuery pq = datastore.prepare(q);
+
+			Entity result = pq.asSingleEntity();
+
+			Number numOfLikes = (Number) result.getProperty("numOfLikes");
+			Integer num = numOfLikes.intValue();
 			num++;
-		else
-			num--;
-		numOfLikes = num;
-		// = numOfLikes+1;
+			numOfLikes = num;
 
-		result.setProperty("numOfLikes", numOfLikes);
-		datastore.put(result);
-		// result.
-		// Integer numOfLikes = (Integer) result.getProperty("numOfLikes");
+			result.setProperty("numOfLikes", numOfLikes);
+			datastore.put(result);
+			out.print("num of likes is: " + numOfLikes);
 
-		// datastore.delete(myKey);
-		out.print("num of likes is: " + numOfLikes);
+		} else
+			out.print("this user already voted");
 
 	}
 
