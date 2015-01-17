@@ -33,7 +33,7 @@ public class GetArchiveMeetingsServlet extends HttpServlet {
 		Filter idFilter = new FilterPredicate("clubId", FilterOperator.EQUAL,
 				clubId);
 
-		Query q = new Query("ArchiveMeeting").setFilter(idFilter);
+		Query q = new Query("ArchivedMeeting").setFilter(idFilter);
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
