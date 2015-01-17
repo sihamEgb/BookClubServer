@@ -2,7 +2,6 @@ package bookclub.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,12 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.Filter;
@@ -51,11 +47,10 @@ public class AddMeetingServlet extends HttpServlet {
 		String clubId = req.getParameter("clubId");
 		String location = req.getParameter("location");
 
-		DateFormat formatter;
+		String strDate = req.getParameter("date");// "2011-01-01 00:00:00"
 		Date date = null;
-		formatter = new SimpleDateFormat("dd-MMM-yy");
 		try {
-			date = formatter.parse(req.getParameter("date"));
+			date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(strDate);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

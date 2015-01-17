@@ -20,7 +20,6 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.Filter;
 
 import bookclub.server.entities.Club;
-import bookclub.server.entities.User;
 
 @SuppressWarnings("serial")
 public class GetMyClubsServlet extends HttpServlet {
