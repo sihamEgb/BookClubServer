@@ -7,10 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
 
 @SuppressWarnings("serial")
 public class AddUserServlet extends HttpServlet {
@@ -33,14 +33,10 @@ public class AddUserServlet extends HttpServlet {
 
 		user.setProperty("Date", new Date());
 
-		try {
-			datastore.put(user);
-		} catch (DatastoreFailureException d) {
-			d.printStackTrace();
-		}
+		Key myKey = datastore.put(user);
 
 		resp.setContentType("text/plain");
-		resp.getWriter().println("user added");
+		resp.getWriter().println(Long.toString(myKey.getId()));
 
 	}
 

@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -28,16 +29,20 @@ public class DeleteSuggestedBookServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
-		String id = req.getParameter("suggestedBookId");
+		String clubId = req.getParameter("clubId");
+		String title = req.getParameter("title");
+
+		Filter clubIdFilter = new FilterPredicate("clubId",
+				FilterOperator.EQUAL, clubId);
+		Filter titleFilter = new FilterPredicate("title", FilterOperator.EQUAL,
+				title);
+
+		Filter andAllFilter = CompositeFilterOperator.and(clubIdFilter,
+				titleFilter);
 
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-
-		Key myKey = KeyFactory.createKey("SuggestedBook", Long.parseLong(id));
-
-		Filter keyFilter = new FilterPredicate(Entity.KEY_RESERVED_PROPERTY,
-				FilterOperator.EQUAL, myKey);
-		Query q = new Query("SuggestedBook").setFilter(keyFilter);
+		Query q = new Query("SuggestedBook").setFilter(andAllFilter);
 
 		PreparedQuery pq = datastore.prepare(q);
 		Entity result = pq.asSingleEntity();
@@ -46,7 +51,7 @@ public class DeleteSuggestedBookServlet extends HttpServlet {
 		PrintWriter out = resp.getWriter();
 
 		if (result != null) {
-			datastore.delete(myKey);
+			datastore.delete(result.getKey());
 			out.print("success");
 
 		} else {
