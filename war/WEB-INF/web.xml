@@ -193,6 +193,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<url-pattern>/adduser</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>GetUser</servlet-name>
+		<servlet-class>bookclub.server.GetUserServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetUser</servlet-name>
+		<url-pattern>/getuser</url-pattern>
+	</servlet-mapping>
+
+
 
 	<servlet>
 		<servlet-name>GetSuggestedBookById</servlet-name>
@@ -223,5 +233,41 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 		<servlet-name>GetArchiveMeetings</servlet-name>
 		<url-pattern>/getarchivemeetings</url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetMeetingMembers</servlet-name>
+		<servlet-class>bookclub.server.GetMeetingMembersServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMeetingMembers</servlet-name>
+		<url-pattern>/getmeetingmembers</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetUserMeetings</servlet-name>
+		<servlet-class>bookclub.server.GetUserMeetingsServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetUserMeetings</servlet-name>
+		<url-pattern>/getusermeetings</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>GetMyClubsMeetings</servlet-name>
+		<servlet-class>bookclub.server.GetMyClubsMeetingsServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetMyClubsMeetings</servlet-name>
+		<url-pattern>/getmyclubsmeetings</url-pattern>
+	</servlet-mapping>
+
+
+
+
+
+
 
 </web-app>

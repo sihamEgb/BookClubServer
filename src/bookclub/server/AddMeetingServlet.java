@@ -67,6 +67,7 @@ public class AddMeetingServlet extends HttpServlet {
 		} else {
 
 			Entity archivedMeeting = new Entity("ArchivedMeeting");
+			archivedMeeting.setProperty("Key", result.getKey());
 			archivedMeeting.setProperty("title", result.getProperty("title"));
 			archivedMeeting.setProperty("location",
 					result.getProperty("location"));
@@ -74,6 +75,9 @@ public class AddMeetingServlet extends HttpServlet {
 			archivedMeeting.setProperty("date", result.getProperty("date"));
 			datastore.put(archivedMeeting);
 
+			// datastore.delete(result);
+			datastore.delete(result.getKey());
+			// result.setProperty("Key", new Key());
 			result.setProperty("title", title);
 			result.setProperty("location", location);
 			result.setProperty("date", date);

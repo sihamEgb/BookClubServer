@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.DatastoreFailureException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -34,38 +33,36 @@ public class JoinMeetingServlet extends HttpServlet {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 		resp.setContentType("text/plain");
-		if (op.equals("join")) {
 
-			Entity joinMeeting = new Entity("JoinMeeting");
-			joinMeeting.setProperty("meetingId", meetingId);
-			joinMeeting.setProperty("userId", userId);
+		Filter userFilter = new FilterPredicate("userId", FilterOperator.EQUAL,
+				userId);
+		Filter meetingFilter = new FilterPredicate("meetingId",
+				FilterOperator.EQUAL, meetingId);
+		Filter andFilter = CompositeFilterOperator.and(userFilter,
+				meetingFilter);
+		Query q2 = new Query("JoinMeeting").setFilter(andFilter);
 
-			try {
-				datastore.put(joinMeeting);
-			} catch (DatastoreFailureException d) {
-				d.printStackTrace();
-			}
+		PreparedQuery pq2 = datastore.prepare(q2);
+		Entity result2 = pq2.asSingleEntity();
 
-			resp.getWriter().println("member joined meeting");
+		if (op.equals("leave") && (result2 == null))
+			resp.getWriter().println("member did not joined this meeting");
+		else if (op.equals("join") && (result2 != null))
+			resp.getWriter().println("member already joined this meeting");
+
+		else if (op.equals("leave")) {
+			datastore.delete(result2.getKey());
+			resp.getWriter().println("member leaved meeting");
 		} else {
 
-			Filter userFilter = new FilterPredicate("userId",
-					FilterOperator.EQUAL, userId);
+			Entity JoinMeeting = new Entity("JoinMeeting");
+			JoinMeeting.setProperty("meetingId", meetingId);
+			JoinMeeting.setProperty("userId", userId);
 
-			Filter meetingFilter = new FilterPredicate("meetingId",
-					FilterOperator.EQUAL, meetingId);
-
-			Filter andFilter = CompositeFilterOperator.and(userFilter,
-					meetingFilter);
-
-			Query q = new Query("JoinMeeting").setFilter(andFilter);
-
-			PreparedQuery pq = datastore.prepare(q);
-			Entity result = pq.asSingleEntity();
-			datastore.delete(result.getKey());
-
-			resp.getWriter().println("member leaved meeting");
+			datastore.put(JoinMeeting);
+			resp.getWriter().println("member joined meeting");
 		}
+
 	}
 
 }
